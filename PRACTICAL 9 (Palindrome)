@@ -1,0 +1,85 @@
+// A palindrome is a string of character that‘s the same forward and backward. Typically, punctuation, capitalization, and spaces are ignored. For example, ‖ Poor Dan is in a droop ‖ is a palindrome, as it can be seen by examining the characters ―poor danisina droop ‖ and observing that they are the same forward and backward. Write C++ program with functions-
+
+//     to check whether given string is palindrome or not that uses a stack to determine whether a string is a palindrome
+//     to remove spaces and punctuation in string, convert all the Characters to lowercase, and then call above Palindrome checking function to check for a palindrome
+//     to print string in reverse order using stack
+
+#include <iostream>
+using namespace std;
+class stack
+{
+	public:
+	const static int size = 20;
+	int top = -1;
+	char array[size];
+	void push(char x)
+	{
+		if (top == size - 1)
+		{
+			cout << "stack overflow";
+			return;
+		}
+		array[++top] = x;
+	}
+	char pop()
+	{
+		if (top == -1)
+		{
+		cout << "stack underflow";
+		return -1;
+		}
+		return array[top--];
+	}
+	void display()
+	{
+		if (top == -1)
+		{
+		cout << "stack is empty";
+		}
+        else
+		cout << "stack contains:";
+		for (int i = 0; i <= top; i++)
+		{
+		cout << array[i] << "";
+		}
+		cout << endl;
+	}
+};
+int main()
+{
+	stack s;
+	string useri;
+	cout << "enter the string: ";
+	//getline(cin, useri);
+	cin>>useri;
+	string orgstr = "";
+	for (int i = 0; i < useri.size(); i++)
+	{
+		char ch = useri[i];
+		if (ch >= 'a' and ch <= 'z')
+		{
+		ch = (char)(ch - 'a' + 'A');
+		}
+		if (ch >= 'A' and ch <= 'z')
+		{
+		s.push(ch);
+		orgstr.push_back(ch);
+		}
+	}
+	cout << "original string: " << orgstr << endl;
+	string rev_str = "";
+	while (s.top != -1){
+	    rev_str.push_back(s.pop());
+	}
+	cout << "reversed string " << rev_str << endl;
+	bool is_palindrome = true;
+	for (int i = 0; i < orgstr.size(); i++){
+		if (orgstr[i] != rev_str[i]){
+            bool is_palindrome = false;
+            cout << "string is not palindrome";
+            break;
+		}
+		cout << "string is palindrome";
+		break;
+	}
+}
