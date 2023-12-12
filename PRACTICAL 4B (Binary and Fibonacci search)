@@ -1,0 +1,112 @@
+"""
+       Group B - Assignment 4 b
+a)	Write a pythonprogram to store roll numbers of student in array who
+attended training program in random order. Write function for searching
+whether particular student attended training program or not,
+using Binary search and Fibonacci search. 
+"""
+def accept_array(A): 
+    n = int(input("Enter the total no. of student : "))
+    for i in range(n):
+        x = int(input("Enter the  roll no of student %d : "%(i+1)))
+        A.append(x)
+    print("Student Info accepted successfully\n\n")
+    return n
+
+def display_array(A,n): 
+    if(n == 0) :
+        print("\nNo records in the database")
+    else :
+        print("Students  Array : ",end=' ')
+        for i in range(n) :
+            print("%d  "%A[i],end=' ')
+        print("\n")
+def Recursive_binary_search(A,s,l,X):
+    if(s> l):
+        return -1
+    mid = int((s+l)/2)
+    if(A[mid] ==X):
+        return mid
+    else:
+        if(A[mid] > X):
+            return Recursive_binary_search(A,s,mid-1,X)
+        else:
+            Recursive_binary_search(A,mid+1,l,X)
+def Iterative_binary_search(A,s,l,X):
+    mid = int((s + l)/2)
+    if (X == A[mid]):
+        return mid
+    elif(X > A[mid]):
+        s = mid + 1
+    else:                  
+        l = mid - 1
+def Fibonacci_search(A,n,X):
+    f1 = 0
+    f2 = 1
+    f3 = f1+f2
+    offset = -1
+    while (f3 < n): 
+        f1 = f2 
+        f2 = f3 
+        f3 = f1 + f2 
+    while (f3 > 1): 
+        i = min(offset+f1, n-1) 
+        if (A[i] < X): 
+            f3 = f2 
+            f2 = f1 
+            f1 = f3 - f2 
+            offset = i 
+        elif (A[i] > X): 
+            f3 = f1 
+            f2 = f2 - f1 
+            f1 = f3 - f2
+        else:
+            return i
+        if(f2 and A[n-1] == X): 
+            return n-1
+  
+    # element not found. return -1 
+    return -1
+
+def Main() :   
+    A = []
+    while True :
+        print ("\t1 : Accept & Display Students info ")      
+        print ("\t2 : Recursive_binary_search")
+        print ("\t3 : Iterative_binary_search")
+        print ("\t4 : Fibonacci Search")
+        print ("\t5 : Exit")
+        ch = int(input("Enter your choice : "))
+        if (ch == 5):
+            print ("End of Program")
+            quit()
+        elif (ch==1):
+            A = []
+            n = accept_array(A)
+            display_array(A,n)
+        elif (ch==2):
+           X = int(input("Enter the roll_no to be searched : "))
+           flag = Recursive_binary_search(A,0,n-1,X)
+           if flag != -1:
+               print('Element found at index %d'%(flag) )
+           else:
+               print('Element not found in the array')
+           flag  = Recursive_binary_search(A,0,n-1,X)
+           if(flag == -1) :
+               print("\tRoll no to be Searched not Found\n")
+        elif (ch==3):
+           X = int(input("Enter the roll_no to be searched : "))
+           result = Iterative_binary_search(A, 0, n-1,X)
+           if result != -1:
+               print("Element is present at index " + str(result))
+           else:
+               print("Not found")
+        elif (ch==4):
+            X = int(input("Enter the roll_no to be searched : "))
+            flag  = Fibonacci_search(A,n,X)
+            if(flag == -1) :
+                print("\tRoll no to be Searched not Found\n")
+            else :
+                print("\tRoll no found at location %d"%(flag + 1))
+Main()
+
