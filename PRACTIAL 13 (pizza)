@@ -1,0 +1,94 @@
+/*
+ Pizza parlor accepting maximum M orders. Orders are served in first
+come first served basis. Order once placed can not be cancelled. Write
+C++ program to simulate the system using circular queue using array.
+ */
+#include <iostream>
+#define MAX 5               // maximum size of the circular queue.
+using namespace std;
+class cqueuepizza{
+	int q[MAX],rear,front;         //private array q to store orders, and rear and front as indices to keep track of the queue.
+public:
+	cqueuepizza();
+	void insert(int);
+	int delete1();
+	void display();
+};
+cqueuepizza :: cqueuepizza(){
+	front=rear=-1;                   //indicating an empty queue.  
+}
+void cqueuepizza::insert (int value){
+	if (((rear == MAX-1) && (front == -1))|| (rear -front)==-1)  //This part checks if the rear has reached the end of the array and the front is still at its initial position, indicating a full queue.
+		cout<<"\n Queue is Full";
+	else{
+		if (rear == MAX-1)	//creating circular link
+			rear = -1;            //If the queue is not full, it checks if the rear has reached the end of the array. If so, it wraps around to the beginning, creating a circular link 
+		rear ++;                  //Then, it increments the rear index and adds the order at that position in the array
+		q[rear] = value;
+		cout<<"Order added at "<<rear<<endl;
+	}
+}
+int cqueuepizza::delete1( ){
+	int value;
+	if (rear == front){           // If rear is equal to front, it means there are no orders in the queue,
+		cout<<endl<<"Queue is Empty";
+			return -999;           //The function then returns -999 as a sentinel value to indicate an empty queue.
+	}
+	else{
+		if ((front == MAX-1) && rear < front)	//creating circular link
+			front = -1;
+		front ++;               //it increments the front index, retrieves the order from that position in the array, and prints the position from which the order is removed
+		value = q[front];
+		cout<<"Order removed from "<<front<<endl;
+		return value;
+	}
+}
+void cqueuepizza :: display(){
+	int i;
+	cout<<endl;
+    if(front <= rear){    //If front is less than or equal to rear, it means the circular queue has a simple structure without wrapping.
+        i = front+1;      //it traverses the elements from front + 1 to rear and prints them.
+        while(i <= rear)
+            cout<<q[i++]<<"  ";
+    }
+    else {
+        i = front+1;
+        while(i <= MAX - 1)  //If front is greater than rear, indicating a wrapped circular queue, it first traverses the elements from front + 1 to the end of the array (MAX - 1)
+            cout<<q[i++]<<"  "; //it wraps around to the beginning of the array (i = 0) and continues traversing up to rear.
+        i = 0;
+        while(i <= rear)
+            cout<<q[i++]<<"  ";
+    }
+}
+int main(){
+	int choice,x,y;
+	char ans;
+	cqueuepizza q1;
+	do{
+		cout<<"\n****MENU****";
+		cout<<"\n1. Place an order id ";
+		cout<<"\n2. Remove an order id ";
+		cout<<"\n3. Display the queue ";
+		cout<<"\nEnter your choice: ";
+		cin>>choice;
+		switch(choice){
+		case 1: cout<<"\n Enter the order id  :  ";
+				cin>>y;
+				q1.insert(y);
+				q1.display();
+				break;
+		case 2: x=q1.delete1();
+                if(x!=-999)
+                    cout<<"\nThe removed order is: "<<x;
+                q1.display();
+                break;
+        case 3:  q1.display();
+                    break;
+		default: cout<<"\nWrong choice!!";
+				 break;
+		}
+		cout<<"\nDo you want to continue(y/n)??";
+		cin>>ans;
+	}while(ans=='y');
+	return 0;
+}
